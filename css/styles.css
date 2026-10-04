@@ -8,6 +8,15 @@ body {
 #screen-welcome {
     background-image: radial-gradient(ellipse at 50% 45%, rgba(16, 185, 129, 0.3) 0%, rgba(16, 185, 129, 0.12) 48%, transparent 82%);
 }
+.welcome-brandmark {
+    position: fixed;
+    z-index: 20;
+    top: max(1rem, env(safe-area-inset-top));
+    left: max(1rem, env(safe-area-inset-left));
+    width: 5rem;
+    height: 5rem;
+    object-fit: contain;
+}
 
 /* High Contrast Mode Overrides */
 body.high-contrast {
@@ -60,6 +69,14 @@ body.high-contrast .hc-accent {
 #kiosk-main {
     padding-bottom: max(6rem, calc(env(safe-area-inset-bottom) + 5rem));
     scroll-padding-block: 1rem;
+    overscroll-behavior: none;
+}
+@media (max-width: 768px), (max-height: 700px) {
+    #kiosk-main {
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+    }
 }
 
 .wizard-stepper.hidden {
@@ -533,6 +550,12 @@ body.high-contrast .ai-loading-track span {
 }
 
 @media (max-width: 480px) {
+    .welcome-brandmark {
+        top: max(0.75rem, env(safe-area-inset-top));
+        left: max(0.75rem, env(safe-area-inset-left));
+        width: 4rem;
+        height: 4rem;
+    }
     #kiosk-main {
         padding-right: 0.875rem;
         padding-left: 0.875rem;
@@ -587,6 +610,13 @@ body.high-contrast .ai-loading-track span {
     .start-attendance-btn {
         min-height: 7rem;
         font-size: clamp(1.2rem, 5vw, 1.5rem);
+    }
+}
+
+@media (max-height: 520px) {
+    .welcome-brandmark {
+        width: 3rem;
+        height: 3rem;
     }
 }
 

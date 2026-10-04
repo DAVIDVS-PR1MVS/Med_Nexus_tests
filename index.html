@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Med Nexus</title>
-    <link rel="shortcut icon" href="assets/logo/logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/logo/logo2.png" type="image/x-icon">
     
     <!-- Carregamento do Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,7 +21,9 @@
 </head>
 <body id="kiosk-body" class="h-full bg-slate-100 text-slate-800 flex flex-col justify-between overflow-hidden relative">
 
-    <main id="kiosk-main" class="flex-1 relative flex flex-col justify-center p-4 sm:p-8 max-w-6xl mx-auto w-full min-h-0 overflow-y-auto">
+    <img id="welcome-brandmark" src="assets/logo/logo2.png" alt="Logotipo do Med Nexus" class="welcome-brandmark">
+
+    <main id="kiosk-main" class="flex-1 relative flex flex-col justify-center p-4 sm:p-8 max-w-6xl mx-auto w-full min-h-0 overflow-hidden">
 
         <div id="wizard-stepper" class="wizard-stepper hidden" aria-label="Etapas do atendimento">
             <div id="step-node-1" class="stepper-stop stepper-stop-1"><span class="stepper-dot"></span><span class="stepper-label" data-i18n="step1Label">Identificação</span></div>
@@ -47,7 +49,7 @@
         <!-- ========================================== -->
         <!-- TELA 0: BOAS-VINDAS / INATIVIDADE -->
         <!-- ========================================== -->
-        <section id="screen-welcome" class="flex-1 flex flex-col items-center justify-center text-center space-y-8 my-auto py-6">
+        <section id="screen-welcome" class="relative flex-1 flex flex-col items-center justify-center text-center space-y-8 my-auto py-6">
             <div class="max-w-2xl">
                 <h2 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight hc-text">
                     <span data-i18n="welcomeTitle1">Atendimento automatizado</span> 

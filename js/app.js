@@ -186,6 +186,7 @@ async function showAiLoading(nextStep, descriptionKey, onComplete = () => {}) {
   const main = document.getElementById("kiosk-main");
   const loadingScreen = document.getElementById("screen-ai-loading");
 
+  document.getElementById("welcome-brandmark").classList.add("hidden");
   document.getElementById("screen-welcome").classList.add("hidden");
   for (let step = 1; step <= 5; step++) {
     document.getElementById(`step-${step}`)?.classList.add("hidden");
@@ -210,6 +211,9 @@ async function showAiLoading(nextStep, descriptionKey, onComplete = () => {}) {
 function goToStep(stepNum) {
   state.loadingToken += 1;
   state.currentStep = stepNum;
+  document
+    .getElementById("welcome-brandmark")
+    .classList.toggle("hidden", stepNum !== 0);
   document.getElementById("screen-ai-loading").classList.add("hidden");
   document
     .getElementById("kiosk-main")
