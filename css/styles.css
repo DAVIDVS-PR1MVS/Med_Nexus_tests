@@ -141,6 +141,21 @@ body.high-contrast .hc-accent {
 .stepper-connector.is-complete {
     background: #059669;
 }
+@media (max-width: 768px) {
+    .wizard-stepper {
+        padding: 0.5rem 0.625rem 0.625rem;
+        border: 1px solid rgba(148, 163, 184, 0.38);
+        border-radius: 0 0 1rem 1rem;
+        background: rgba(248, 250, 252, 0.76);
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+    }
+    body.high-contrast .wizard-stepper {
+        border-color: #facc15;
+        background: rgba(0, 0, 0, 0.92);
+    }
+}
 @media (max-width: 480px) {
     .wizard-stepper {
         width: calc(100% - 1.5rem);
