@@ -43,7 +43,6 @@ tailwind.config = {
 // Estado global do totem
 const state = {
   currentStep: 0,
-  currentLang: "pt",
   serviceType: "",
   rawCpf: "",
   patientData: {
@@ -54,6 +53,7 @@ const state = {
   priorityLevel: "CONVENCIONAL",
   urgencyLevel: "MILD",
   ticketCode: "",
+  loadingToken: 0,
 
   // Opções de acessibilidade
   isHighContrast: false,
@@ -72,7 +72,6 @@ const i18nDict = {
     contrast: "Contraste",
     voiceOff: "Voz: OFF",
     voiceOn: "Voz: ON",
-    btnHome: "Início",
     welcomeTitle1: "Retire sua Senha ou Faça seu",
     step1Label: "Identificação",
     step2Label: "Serviço",
@@ -84,6 +83,13 @@ const i18nDict = {
     cpfHelp: "Digite apenas os 11 números do documento.",
     cpfInvalid: "Digite os 11 números do CPF.",
     cpfLoading: "Validando CPF e preparando atendimento...",
+    loadingLabel: "Demonstração do assistente de IA",
+    loadingTitle: "Preparando seu atendimento",
+    loadingStart: "A IA está organizando o fluxo e preparando sua identificação.",
+    loadingCpf: "A IA está validando os dígitos e preparando os dados de demonstração.",
+    loadingService: "A IA está organizando as opções e os setores para seu atendimento.",
+    loadingPriority: "A IA está preparando as informações para direcionar seu atendimento.",
+    loadingTicket: "A IA está montando sua senha e organizando a chamada na fila.",
     btnLimpar: "Limpar",
     btnConfirmID: "VALIDAR CPF",
     step2Title: "Qual o motivo do seu atendimento hoje?",
@@ -149,186 +155,6 @@ const i18nDict = {
     seconds: "segundos...",
     statusReception: "Recepção: Fluxo Normal",
     ticketsCalled: "Senhas chamadas agora:",
-    btnCallHelp: "Chamar Atendente",
-    btnBack: "Voltar",
-    assistantCalledTitle: "Atendente Solicitado!",
-    assistantCalledDesc:
-      "Um profissional da recepção foi notificado e já está a caminho deste totem (#03) para lhe auxiliar.",
-  },
-  en: {
-    accessibilityBar: "Accessibility Tools:",
-    utilityTitle: "Service options",
-    flowTitle: "Service steps",
-    contrast: "Contrast",
-    voiceOff: "Voice: OFF",
-    voiceOn: "Voice: ON",
-    btnHome: "Home",
-    welcomeTitle1: "Get Your Ticket or Complete",
-    step1Label: "ID",
-    step2Label: "Service",
-    step3Label: "Confirm",
-    step4Label: "Priority",
-    step1Title: "How would you like to identify yourself?",
-    step1Sub: "Enter the 11 CPF digits to simulate the service.",
-    cpfLabel: "ID Number",
-    cpfHelp: "Enter digits only.",
-    cpfInvalid: "Enter all 11 CPF digits.",
-    cpfLoading: "Validating CPF and preparing service...",
-    btnLimpar: "Clear",
-    btnConfirmID: "VALIDATE CPF",
-    step2Title: "What is the reason for your visit today?",
-    step2Sub: "Select one of the options below by tapping the card:",
-    serv1Title: "Urgent Care / ER",
-    serv1Desc:
-      "For acute symptoms, severe pain, fever, or emergency situations.",
-    serv2Title: "Scheduled Appointment",
-    serv2Desc:
-      "Confirm your arrival for previously booked doctor appointments.",
-    serv3Title: "Test Results Pick-up",
-    serv3Desc: "Print lab or imaging test results at the counter.",
-    serv4Title: "Information & Orientation",
-    serv4Desc:
-      "Inpatient visits, general inquiries, and authorization counter.",
-    triageHeader: "Primary Symptom Triage",
-    triageSub: "Select the level that best describes your current state:",
-    triageMild: "Mild Symptoms",
-    triageMildDesc:
-      "Mild flu, light muscle ache, dressing changes, or prescription renewal.",
-    triageMod: "Moderate Symptoms",
-    triageModDesc:
-      "High fever, severe migraine, general malaise, minor fractures.",
-    triageUrg: "Urgent / Intense Pain",
-    triageUrgDesc:
-      "Chest pain, severe shortness of breath, active bleeding, severe burns.",
-    step3Title: "Confirm details & select Specialty",
-    step3Sub: "We found the following records in our system:",
-    foundPatient: "Demo patient",
-    cpfSimulationError: "Could not prepare the demo. Please try again.",
-    btnNotYou: "Not you? Change",
-    selectSpecLabel: "Select desired Department / Specialty:",
-    step4Title: "Do you have Priority Access rights?",
-    step4Sub: "Select one of the priority options guaranteed by law:",
-    prioGeneral: "General / Standard Access",
-    prioGeneralDesc: "I do not belong to legal priority categories.",
-    prioElderly: "Senior (60+ years)",
-    prioElderlyDesc: "Special priority for 80+ years.",
-    prioPregnant: "Pregnant / Nursing",
-    prioPregnantDesc: "Pregnant women or mothers with infants.",
-    prioPCD: "Disabled Person",
-    prioPCDDesc: "Reduced mobility or disability limitations.",
-    prioTEA: "Autism Spectrum (ASD)",
-    prioTEADesc: "Priority access guaranteed by law.",
-    prioOther: "Other Priorities",
-    prioOtherDesc: "Blood donors, severe obesity, etc.",
-    ticketSuccess: "Your Ticket Was Generated Successfully!",
-    ticketSub:
-      "Take your printed ticket below or track queue status on your phone via QR:",
-    receiptSubtitle: "Digital Service Receipt",
-    yourNumber: "YOUR NUMBER",
-    lblPatient: "Patient:",
-    lblSpec: "Specialty:",
-    lblLoc: "Location:",
-    lblWait: "Est. Wait Time:",
-    mobileTrack: "Track on Mobile",
-    tvPrompt: "Please watch the TV monitors in the waiting area.",
-    btnPrint: "PRINT PAPER TICKET",
-    resetCountdown: "Resetting in",
-    seconds: "seconds...",
-    statusReception: "Reception: Normal Flow",
-    ticketsCalled: "Now calling:",
-    btnCallHelp: "Call Assistant",
-    btnBack: "Back",
-    assistantCalledTitle: "Staff Notified!",
-    assistantCalledDesc:
-      "A reception staff member has been notified and is coming to kiosk #03 to help you.",
-  },
-  es: {
-    accessibilityBar: "Herramientas de Accesibilidad:",
-    utilityTitle: "Opciones de atención",
-    flowTitle: "Etapas de atención",
-    contrast: "Contraste",
-    voiceOff: "Voz: DES",
-    voiceOn: "Voz: ACT",
-    btnHome: "Inicio",
-    welcomeTitle1: "Obtenga su Turno o Haga su",
-    step1Label: "Identificación",
-    step2Label: "Servicio",
-    step3Label: "Confirmar",
-    step4Label: "Prioridad",
-    step1Title: "¿Cómo desea identificarse?",
-    step1Sub: "Ingrese los 11 dígitos del CPF para simular la atención.",
-    cpfLabel: "Número de Documento",
-    cpfHelp: "Ingrese solo números.",
-    cpfInvalid: "Ingrese los 11 dígitos del CPF.",
-    cpfLoading: "Validando CPF y preparando la atención...",
-    btnLimpar: "Limpiar",
-    btnConfirmID: "VALIDAR CPF",
-    step2Title: "¿Cuál es el motivo de su visita hoy?",
-    step2Sub: "Seleccione una de las siguientes opciones tocando la casilla:",
-    serv1Title: "Urgencias / Emergencia",
-    serv1Desc:
-      "Para síntomas agudos, dolores fuertes, fiebre o emergencias sin cita.",
-    serv2Title: "Cita Programada (Check-in)",
-    serv2Desc:
-      "Confirme su llegada para consultas médicas marcadas previamente.",
-    serv3Title: "Retiro de Exámenes",
-    serv3Desc: "Imprimir resultados de laboratorio o imágenes en el mostrador.",
-    serv4Title: "Información y Orientación",
-    serv4Desc:
-      "Visitas a pacientes, consultas generales y ventanilla de autorizaciones.",
-    triageHeader: "Triaje Primario de Síntomas",
-    triageSub: "Seleccione el nivel que mejor describe su estado actual:",
-    triageMild: "Síntomas Leves",
-    triageMildDesc:
-      "Gripe leve, dolor muscular leve, curaciones o renovación de receta.",
-    triageMod: "Síntomas Moderados",
-    triageModDesc:
-      "Fiebre alta, migraña fuerte, malestar general, pequeñas fracturas.",
-    triageUrg: "Urgencia / Dolor Intenso",
-    triageUrgDesc:
-      "Dolor de pecho, dificultad respiratoria severa, sangrado activo.",
-    step3Title: "Confirme datos y elija la Especialidad",
-    step3Sub: "Encontramos los siguientes registros en nuestro sistema:",
-    foundPatient: "Paciente de demostración",
-    cpfSimulationError: "No se pudo preparar la demostración. Inténtelo de nuevo.",
-    btnNotYou: "¿No es usted? Cambiar",
-    selectSpecLabel: "Seleccione el Sector / Especialidad Deseada:",
-    step4Title: "¿Tiene derecho a Atención Prioritaria?",
-    step4Sub: "Seleccione una opción prioritaria garantizada por la ley:",
-    prioGeneral: "Atención General / Convencional",
-    prioGeneralDesc: "No me encuentro en categorías de prioridad legal.",
-    prioElderly: "Adulto Mayor (60+ años)",
-    prioElderlyDesc: "Prioridad especial para mayores de 80 años.",
-    prioPregnant: "Embarazada / Lactante",
-    prioPregnantDesc: "Mujeres embarazadas o con lactantes.",
-    prioPCD: "Persona con Discapacidad",
-    prioPCDDesc: "Movilidad reducida o limitaciones de discapacidad.",
-    prioTEA: "Espectro Autista (TEA)",
-    prioTEADesc: "Derecho garantizado por ley prioritaria.",
-    prioOther: "Otras Prioridades",
-    prioOtherDesc: "Donantes de sangre, obesidad severa, etc.",
-    ticketSuccess: "¡Su Turno Fue Generado con Éxito!",
-    ticketSub:
-      "Retire su comprobante impreso abajo o siga su turno en el móvil con el código QR:",
-    receiptSubtitle: "Comprobante de Atención Digital",
-    yourNumber: "SU TURNO",
-    lblPatient: "Paciente:",
-    lblSpec: "Especialidad:",
-    lblLoc: "Lugar:",
-    lblWait: "Tiempo Est.:",
-    mobileTrack: "Seguir en el Móvil",
-    tvPrompt:
-      "Por favor, esté atento a las pantallas de TV en la sala de espera.",
-    btnPrint: "IMPRIMIR EN PAPEL",
-    resetCountdown: "Reiniciando en",
-    seconds: "segundos...",
-    statusReception: "Recepción: Flujo Normal",
-    ticketsCalled: "Llamando ahora:",
-    btnCallHelp: "Llamar Asistente",
-    btnBack: "Volver",
-    assistantCalledTitle: "¡Personal Notificado!",
-    assistantCalledDesc:
-      "Un miembro del personal fue notificado y se dirige al totem #03 para ayudarle.",
   },
 };
 
@@ -345,19 +171,50 @@ const specialtiesList = [
 window.addEventListener("DOMContentLoaded", () => {
   lucide.createIcons();
   renderSpecialties();
+  updateStepperProgress(1);
 });
 
-function startWizard() {
-  goToStep(1);
+async function startWizard() {
+  const completed = await showAiLoading(1, "loadingStart");
+  if (!completed) return;
   playAudioTone(600, 0.1);
-  speakText(i18nDict[state.currentLang].step1Title);
+  speakText(i18nDict.pt.step1Title);
+}
+
+async function showAiLoading(nextStep, descriptionKey, onComplete = () => {}) {
+  const loadingToken = ++state.loadingToken;
+  const main = document.getElementById("kiosk-main");
+  const loadingScreen = document.getElementById("screen-ai-loading");
+
+  document.getElementById("screen-welcome").classList.add("hidden");
+  for (let step = 1; step <= 5; step++) {
+    document.getElementById(`step-${step}`)?.classList.add("hidden");
+  }
+  main.classList.remove("wizard-active");
+  main.classList.add("wizard-loading");
+  document.getElementById("ai-loading-title").innerText =
+    i18nDict.pt.loadingTitle;
+  document.getElementById("ai-loading-description").innerText =
+    i18nDict.pt[descriptionKey];
+  loadingScreen.classList.remove("hidden");
+  lucide.createIcons();
+
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  if (loadingToken !== state.loadingToken) return false;
+
+  onComplete();
+  goToStep(nextStep);
+  return true;
 }
 
 function goToStep(stepNum) {
+  state.loadingToken += 1;
   state.currentStep = stepNum;
+  document.getElementById("screen-ai-loading").classList.add("hidden");
   document
     .getElementById("kiosk-main")
     .classList.toggle("wizard-active", stepNum >= 1 && stepNum <= 4);
+  document.getElementById("kiosk-main").classList.remove("wizard-loading");
 
   // Oculta todas as telas das etapas
   document.getElementById("screen-welcome").classList.add("hidden");
@@ -366,25 +223,18 @@ function goToStep(stepNum) {
     if (el) el.classList.add("hidden");
   }
 
-  const btnHome = document.getElementById("btn-global-home");
-  const btnBack = document.getElementById("btn-wizard-back");
   const stepperBar = document.getElementById("wizard-stepper");
 
   if (stepNum === 0) {
     document.getElementById("screen-welcome").classList.remove("hidden");
-    btnHome.classList.add("hidden");
-    btnBack.classList.add("hidden");
     stepperBar.classList.add("hidden");
+    updateStepperProgress(1);
   } else if (stepNum === 5) {
     document.getElementById("step-5").classList.remove("hidden");
-    btnHome.classList.remove("hidden");
-    btnBack.classList.add("hidden");
     stepperBar.classList.add("hidden");
     startFinishCountdown();
   } else {
     document.getElementById(`step-${stepNum}`).classList.remove("hidden");
-    btnHome.classList.remove("hidden");
-    btnBack.classList.remove("hidden");
     stepperBar.classList.remove("hidden");
     updateStepperProgress(stepNum);
   }
@@ -418,13 +268,6 @@ function updateStepperProgress(step) {
   }
 }
 
-function toggleUtilityPanel() {
-  const panel = document.getElementById("utility-panel");
-  const toggle = document.getElementById("utility-toggle");
-  const isOpen = panel.classList.toggle("hidden") === false;
-  toggle.setAttribute("aria-expanded", String(isOpen));
-}
-
 function pressKey(key) {
   playAudioTone(800, 0.05);
   setCpfLookupStatus("");
@@ -444,26 +287,23 @@ function updateKeypadDisplay() {
   const inputEl = document.getElementById("kiosk-id-input");
   if (!inputEl) return;
 
-  let val = state.rawCpf;
-  let formatted = val;
-
-  if (val.length > 3 && val.length <= 6) {
-    formatted = `${val.slice(0, 3)}.${val.slice(3)}`;
-  } else if (val.length > 6 && val.length <= 9) {
-    formatted = `${val.slice(0, 3)}.${val.slice(3, 6)}.${val.slice(6)}`;
-  } else if (val.length > 9) {
-    formatted = `${val.slice(0, 3)}.${val.slice(3, 6)}.${val.slice(6, 9)}-${val.slice(9, 11)}`;
-  }
-
-  inputEl.value = formatted;
+  state.rawCpf = String(state.rawCpf).replace(/\D/g, "").slice(0, 11);
+  inputEl.value = formatCpf(state.rawCpf);
 }
 
 function formatCpf(cpf) {
-  return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+  const digits = String(cpf ?? "").replace(/\D/g, "").slice(0, 11);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 6) return `${digits.slice(0, 3)}.${digits.slice(3)}`;
+  if (digits.length <= 9) {
+    return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
+  }
+  return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
 }
 
 function validarCpf(cpf) {
-  if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+  const digits = String(cpf ?? "").replace(/\D/g, "");
+  if (digits.length !== 11 || /^(\d)\1{10}$/.test(digits)) return false;
 
   const calcularDigito = (base) => {
     const soma = [...base].reduce(
@@ -475,8 +315,8 @@ function validarCpf(cpf) {
   };
 
   return (
-    calcularDigito(cpf.slice(0, 9)) === Number(cpf[9]) &&
-    calcularDigito(cpf.slice(0, 10)) === Number(cpf[10])
+    calcularDigito(digits.slice(0, 9)) === Number(digits[9]) &&
+    calcularDigito(digits.slice(0, 10)) === Number(digits[10])
   );
 }
 
@@ -492,6 +332,11 @@ function gerarNomeAleatorio() {
     "Larissa Mendes Alves",
     "Marcos Vinícius Barros",
     "Rafael Gomes Nascimento",
+    "Ronaldo Silva Pereira",
+    "Sofia Fernandes Castro",
+    "Thiago Lima Barbosa",
+    "Vitória Santos Moreira",
+    "Ronaldo sixevenaldo da silva",
   ];
   return nomes[Math.floor(Math.random() * nomes.length)];
 }
@@ -508,46 +353,20 @@ function setCpfLookupStatus(message, isError = false) {
 
 async function confirmPatientIdentification() {
   if (!validarCpf(state.rawCpf)) {
-    setCpfLookupStatus(i18nDict[state.currentLang].cpfInvalid, true);
+    setCpfLookupStatus(i18nDict.pt.cpfInvalid, true);
     playAudioTone(350, 0.12);
     return;
   }
 
   const cpfDigitado = state.rawCpf;
-  const confirmButton = document.querySelector(".calculator-confirm-button");
-  const keypadButtons = document.querySelectorAll("#view-cpf-keypad button");
-  const buttonContent = confirmButton.innerHTML;
-  setCpfLookupStatus(i18nDict[state.currentLang].cpfLoading);
-  keypadButtons.forEach((button) => {
-    button.disabled = true;
-  });
-  confirmButton.setAttribute("aria-busy", "true");
-  confirmButton.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i><span>${i18nDict[state.currentLang].cpfLoading}</span>`;
-  lucide.createIcons();
-
-  try {
-    await new Promise((resolve) => setTimeout(resolve, 700));
-    if (state.currentStep !== 1 || state.rawCpf !== cpfDigitado) return;
-
+  const completed = await showAiLoading(2, "loadingCpf", () => {
     state.patientData.name = gerarNomeAleatorio();
     state.patientData.cpf = formatCpf(cpfDigitado);
-
     document.getElementById("confirm-patient-name").innerText = state.patientData.name;
     document.getElementById("confirm-patient-cpf").innerText = state.patientData.cpf;
     setCpfLookupStatus("");
-    goToStep(2);
-    speakText(i18nDict[state.currentLang].step2Title);
-  } catch {
-    setCpfLookupStatus(i18nDict[state.currentLang].cpfSimulationError, true);
-    playAudioTone(350, 0.12);
-  } finally {
-    keypadButtons.forEach((button) => {
-      button.disabled = false;
-    });
-    confirmButton.removeAttribute("aria-busy");
-    confirmButton.innerHTML = buttonContent;
-    lucide.createIcons();
-  }
+  });
+  if (completed) speakText(i18nDict.pt.step2Title);
 }
 
 function openUrgencyTriageModal() {
@@ -560,18 +379,18 @@ function closeUrgencyTriageModal() {
   document.getElementById("modal-urgency-triage").classList.add("hidden");
 }
 
-function selectUrgencyLevel(level) {
+async function selectUrgencyLevel(level) {
   state.urgencyLevel = level;
   closeUrgencyTriageModal();
-  goToStep(3);
-  speakText(i18nDict[state.currentLang].step3Title);
+  const completed = await showAiLoading(3, "loadingService");
+  if (completed) speakText(i18nDict.pt.step3Title);
 }
 
-function selectService(type) {
+async function selectService(type) {
   state.serviceType = type;
   playAudioTone(700, 0.1);
-  goToStep(3);
-  speakText(i18nDict[state.currentLang].step3Title);
+  const completed = await showAiLoading(3, "loadingService");
+  if (completed) speakText(i18nDict.pt.step3Title);
 }
 
 function renderSpecialties() {
@@ -595,18 +414,17 @@ function renderSpecialties() {
     .join("");
 }
 
-function selectSpecialty(spec) {
+async function selectSpecialty(spec) {
   state.selectedSpecialty = spec;
   playAudioTone(700, 0.1);
-  goToStep(4);
-  speakText(i18nDict[state.currentLang].step4Title);
+  const completed = await showAiLoading(4, "loadingPriority");
+  if (completed) speakText(i18nDict.pt.step4Title);
 }
 
-function selectPriority(priority) {
+async function selectPriority(priority) {
   state.priorityLevel = priority;
-  generateFinalTicket();
-  goToStep(5);
-  speakText(i18nDict[state.currentLang].ticketSuccess);
+  const completed = await showAiLoading(5, "loadingTicket", generateFinalTicket);
+  if (completed) speakText(i18nDict.pt.ticketSuccess);
 }
 
 function generateFinalTicket() {
@@ -690,14 +508,6 @@ function resetToWelcomeScreen() {
   goToStep(0);
 }
 
-function callHumanAssistant() {
-  document.getElementById("modal-call-assistant").classList.remove("hidden");
-  playAudioTone(900, 0.2);
-}
-function closeCallAssistantModal() {
-  document.getElementById("modal-call-assistant").classList.add("hidden");
-}
-
 // Funções de acessibilidade
 function toggleHighContrast() {
   state.isHighContrast = !state.isHighContrast;
@@ -713,11 +523,11 @@ function toggleVoiceAssistant() {
   const label = document.getElementById("text-voice-state");
 
   if (state.voiceEnabled) {
-    label.innerText = i18nDict[state.currentLang].voiceOn;
+    label.innerText = i18nDict.pt.voiceOn;
     icon.className = "w-3.5 h-3.5 text-emerald-400 animate-pulse";
     speakText("Leitor de áudio ativado.");
   } else {
-    label.innerText = i18nDict[state.currentLang].voiceOff;
+    label.innerText = i18nDict.pt.voiceOff;
     icon.className = "w-3.5 h-3.5 text-emerald-300";
   }
 }
@@ -726,38 +536,8 @@ function speakText(text) {
   if (!state.voiceEnabled || !("speechSynthesis" in window)) return;
   window.speechSynthesis.cancel(); // Interrompe a leitura anterior
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang =
-    state.currentLang === "pt"
-      ? "pt-BR"
-      : state.currentLang === "es"
-        ? "es-ES"
-        : "en-US";
+  utterance.lang = "pt-BR";
   window.speechSynthesis.speak(utterance);
-}
-
-function setLanguage(lang) {
-  state.currentLang = lang;
-  ["pt", "en", "es"].forEach((l) => {
-    const btn = document.getElementById(`lang-${l}`);
-    if (l === lang) {
-      btn.className =
-        "rounded-lg bg-health-600 px-2 py-1.5 text-xs font-extrabold text-white";
-    } else {
-      btn.className =
-        "rounded-lg bg-slate-100 px-2 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-200";
-    }
-  });
-
-  // Atualiza os textos identificados para tradução na página
-  const elements = document.querySelectorAll("[data-i18n]");
-  elements.forEach((el) => {
-    const key = el.getAttribute("data-i18n");
-    if (i18nDict[lang] && i18nDict[lang][key]) {
-      el.innerText = i18nDict[lang][key];
-    }
-  });
-
-  playAudioTone(700, 0.1);
 }
 
 // Retorno sonoro com a API de áudio da Web
