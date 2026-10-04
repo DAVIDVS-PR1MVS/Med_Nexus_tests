@@ -142,6 +142,10 @@ body.high-contrast .hc-accent {
     background: #059669;
 }
 @media (max-width: 768px) {
+    .accessibility-dock-control.accessibility-obscured {
+        visibility: hidden;
+        pointer-events: none;
+    }
     .wizard-stepper {
         top: 0;
         left: 0;

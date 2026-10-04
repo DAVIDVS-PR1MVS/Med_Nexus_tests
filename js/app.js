@@ -174,6 +174,7 @@ window.addEventListener("DOMContentLoaded", () => {
   updateStepperProgress(1);
   const main = document.getElementById("kiosk-main");
   main.addEventListener("scroll", atualizarBlurEtapas, { passive: true });
+  window.addEventListener("resize", atualizarBlurEtapas);
   atualizarBlurEtapas();
 });
 
@@ -204,6 +205,7 @@ async function showAiLoading(nextStep, descriptionKey, onComplete = () => {}) {
     i18nDict.pt[descriptionKey];
   loadingScreen.classList.remove("hidden");
   lucide.createIcons();
+  atualizarBlurEtapas();
 
   await new Promise((resolve) => setTimeout(resolve, 2000));
   if (loadingToken !== state.loadingToken) return false;
@@ -288,6 +290,32 @@ function atualizarBlurEtapas() {
     !stepper.classList.contains("hidden") && haConteudoAbaixo && main.scrollTop > 1;
 
   stepper.classList.toggle("has-content-underlay", conteudoSobEtapas);
+
+  const isMobileViewport = window.innerWidth <= 768;
+  document.querySelectorAll(".accessibility-dock-control").forEach((control) => {
+    if (!isMobileViewport) {
+      control.classList.remove("accessibility-obscured");
+      return;
+    }
+
+    const bounds = control.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+
+    const previousVisibility = control.style.visibility;
+    control.style.visibility = "hidden";
+    const elementBehind = document.elementFromPoint(
+      bounds.left + bounds.width / 2,
+      bounds.top + bounds.height / 2,
+    );
+    control.style.visibility = previousVisibility;
+
+    const contentBehind =
+      elementBehind &&
+      main.contains(elementBehind) &&
+      elementBehind !== main &&
+      !stepper.contains(elementBehind);
+    control.classList.toggle("accessibility-obscured", Boolean(contentBehind));
+  });
 }
 
 function pressKey(key) {
