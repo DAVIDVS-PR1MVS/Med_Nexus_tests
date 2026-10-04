@@ -172,6 +172,9 @@ window.addEventListener("DOMContentLoaded", () => {
   lucide.createIcons();
   renderSpecialties();
   updateStepperProgress(1);
+  const main = document.getElementById("kiosk-main");
+  main.addEventListener("scroll", atualizarBlurEtapas, { passive: true });
+  atualizarBlurEtapas();
 });
 
 async function startWizard() {
@@ -186,6 +189,8 @@ async function showAiLoading(nextStep, descriptionKey, onComplete = () => {}) {
   const main = document.getElementById("kiosk-main");
   const loadingScreen = document.getElementById("screen-ai-loading");
 
+  main.scrollTop = 0;
+  document.getElementById("wizard-stepper").classList.remove("has-content-underlay");
   document.getElementById("welcome-brandmark").classList.add("hidden");
   document.getElementById("screen-welcome").classList.add("hidden");
   for (let step = 1; step <= 5; step++) {
@@ -211,6 +216,8 @@ async function showAiLoading(nextStep, descriptionKey, onComplete = () => {}) {
 function goToStep(stepNum) {
   state.loadingToken += 1;
   state.currentStep = stepNum;
+  document.getElementById("kiosk-main").scrollTop = 0;
+  document.getElementById("wizard-stepper").classList.remove("has-content-underlay");
   document
     .getElementById("welcome-brandmark")
     .classList.toggle("hidden", stepNum !== 0);
@@ -244,6 +251,7 @@ function goToStep(stepNum) {
   }
 
   lucide.createIcons();
+  atualizarBlurEtapas();
 }
 
 function goToPreviousStep() {
@@ -270,6 +278,16 @@ function updateStepperProgress(step) {
     const connector = document.getElementById(`step-connector-${i}`);
     connector.classList.toggle("is-complete", step > i);
   }
+}
+
+function atualizarBlurEtapas() {
+  const main = document.getElementById("kiosk-main");
+  const stepper = document.getElementById("wizard-stepper");
+  const haConteudoAbaixo = main.scrollHeight > main.clientHeight + 1;
+  const conteudoSobEtapas =
+    !stepper.classList.contains("hidden") && haConteudoAbaixo && main.scrollTop > 1;
+
+  stepper.classList.toggle("has-content-underlay", conteudoSobEtapas);
 }
 
 function pressKey(key) {
