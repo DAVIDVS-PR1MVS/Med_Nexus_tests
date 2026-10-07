@@ -30,11 +30,11 @@
             <div id="step-connector-1" class="stepper-connector stepper-connector-1"></div>
             <div id="step-node-2" class="stepper-stop stepper-stop-2"><span class="stepper-dot"></span><span class="stepper-label" data-i18n="step1Label">Identificação</span></div>
             <div id="step-connector-2" class="stepper-connector stepper-connector-2"></div>
-            <div id="step-node-3" class="stepper-stop stepper-stop-3"><span class="stepper-dot"></span><span class="stepper-label" data-i18n="step2Label">Serviço</span></div>
+            <div id="step-node-3" class="stepper-stop stepper-stop-3"><span class="stepper-dot"></span><span class="stepper-label" data-i18n="step4Label">Prioridade</span></div>
             <div id="step-connector-3" class="stepper-connector stepper-connector-3"></div>
-            <div id="step-node-4" class="stepper-stop stepper-stop-4"><span class="stepper-dot"></span><span class="stepper-label" data-i18n="step3Label">Confirmação</span></div>
+            <div id="step-node-4" class="stepper-stop stepper-stop-4"><span class="stepper-dot"></span><span class="stepper-label" data-i18n="step2Label">Serviço</span></div>
             <div id="step-connector-4" class="stepper-connector stepper-connector-4"></div>
-            <div id="step-node-5" class="stepper-stop stepper-stop-5"><span class="stepper-dot"></span><span class="stepper-label" data-i18n="step4Label">Prioridade</span></div>
+            <div id="step-node-5" class="stepper-stop stepper-stop-5"><span class="stepper-dot"></span><span class="stepper-label" data-i18n="step3Label">Confirmação</span></div>
         </div>
 
         <section id="screen-ai-loading" class="hidden ai-loading-screen" role="status" aria-live="polite" aria-atomic="true">
@@ -246,21 +246,21 @@
         <section id="step-4" class="hidden space-y-6">
             <div class="text-center space-y-2">
                 <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight hc-text" data-i18n="step4Title">
-                    Como você está se sentindo agora?
+                    Qual é o nível da sua dor agora?
                 </h2>
                 <p class="text-slate-500 text-sm max-w-xl mx-auto hc-text" data-i18n="step4Sub">
-                    Selecione o nível que melhor descreve seu estado atual:
+                    Selecione a opção que melhor descreve como você está:
                 </p>
             </div>
 
             <div class="grid grid-cols-1 gap-4 max-w-3xl mx-auto pt-2">
-                <button onclick="selectPriority('MILD')" class="hc-card bg-white hover:bg-emerald-50 border-2 border-slate-200 hover:border-emerald-500 rounded-3xl p-5 shadow-sm text-left flex items-start gap-4 transition-all group active:scale-95">
-                    <div class="p-3 bg-emerald-100 text-emerald-700 rounded-2xl group-hover:scale-105 transition-transform">
-                        <i data-lucide="smile" class="w-7 h-7"></i>
+                <button onclick="selectPriority('URGENT')" class="hc-card bg-white hover:bg-rose-50 border-2 border-slate-200 hover:border-rose-500 rounded-3xl p-5 shadow-sm text-left flex items-start gap-4 transition-all group active:scale-95">
+                    <div class="p-3 bg-rose-100 text-rose-700 rounded-2xl group-hover:scale-105 transition-transform">
+                        <i data-lucide="activity" class="w-7 h-7"></i>
                     </div>
                     <div>
-                        <h3 class="text-lg font-black text-slate-800 hc-text" data-i18n="triageMild">Caso Leve</h3>
-                        <p class="text-xs text-slate-500 hc-text" data-i18n="triageMildDesc">Gripe leve, dor muscular baixa, curativos ou renovação de receita.</p>
+                        <h3 class="text-lg font-black text-slate-800 hc-text" data-i18n="triageUrg">Dor extrema ou muito forte</h3>
+                        <p class="text-xs text-slate-500 hc-text" data-i18n="triageUrgDesc">Dor insuportável, dor no peito, falta de ar intensa, sangramento ativo ou queimaduras severas. Um atendente virá até você.</p>
                     </div>
                 </button>
                 <button onclick="selectPriority('MODERATE')" class="hc-card bg-white hover:bg-amber-50 border-2 border-slate-200 hover:border-amber-500 rounded-3xl p-5 shadow-sm text-left flex items-start gap-4 transition-all group active:scale-95">
@@ -268,17 +268,17 @@
                         <i data-lucide="thermometer" class="w-7 h-7"></i>
                     </div>
                     <div>
-                        <h3 class="text-lg font-black text-slate-800 hc-text" data-i18n="triageMod">Caso Intermediário</h3>
-                        <p class="text-xs text-slate-500 hc-text" data-i18n="triageModDesc">Febre alta, enxaqueca forte, mal-estar generalizado, pequenas fraturas.</p>
+                        <h3 class="text-lg font-black text-slate-800 hc-text" data-i18n="triageMod">Dor moderada, mas constante</h3>
+                        <p class="text-xs text-slate-500 hc-text" data-i18n="triageModDesc">Não é tão forte, mas não passa: febre alta, enxaqueca, mal-estar persistente, pequenas fraturas.</p>
                     </div>
                 </button>
-                <button onclick="selectPriority('URGENT')" class="hc-card bg-white hover:bg-rose-50 border-2 border-slate-200 hover:border-rose-500 rounded-3xl p-5 shadow-sm text-left flex items-start gap-4 transition-all group active:scale-95">
-                    <div class="p-3 bg-rose-100 text-rose-700 rounded-2xl group-hover:scale-105 transition-transform">
-                        <i data-lucide="activity" class="w-7 h-7"></i>
+                <button onclick="selectPriority('MILD')" class="hc-card bg-white hover:bg-emerald-50 border-2 border-slate-200 hover:border-emerald-500 rounded-3xl p-5 shadow-sm text-left flex items-start gap-4 transition-all group active:scale-95">
+                    <div class="p-3 bg-emerald-100 text-emerald-700 rounded-2xl group-hover:scale-105 transition-transform">
+                        <i data-lucide="smile" class="w-7 h-7"></i>
                     </div>
                     <div>
-                        <h3 class="text-lg font-black text-slate-800 hc-text" data-i18n="triageUrg">Caso Grave</h3>
-                        <p class="text-xs text-slate-500 hc-text" data-i18n="triageUrgDesc">Dor no peito, falta de ar intensa, sangramento ativo, queimaduras severas. Um atendente virá até você.</p>
+                        <h3 class="text-lg font-black text-slate-800 hc-text" data-i18n="triageMild">Dor leve ou desconforto comum</h3>
+                        <p class="text-xs text-slate-500 hc-text" data-i18n="triageMildDesc">Dor de cabeça leve, gripe, dor muscular, curativos ou renovação de receita.</p>
                     </div>
                 </button>
             </div>
@@ -291,7 +291,7 @@
         </section>
 
         <!-- ========================================== -->
-        <!-- ETAPA 5 (na tela): PRIORIDADE POR LEI - só no caminho leve -->
+        <!-- ETAPA 3 (na tela): PRIORIDADE POR LEI - só no caminho normal/leve -->
         <!-- ========================================== -->
         <section id="step-6" class="hidden space-y-6">
             <div class="text-center space-y-2">
