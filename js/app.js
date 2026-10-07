@@ -73,11 +73,15 @@ const PRIORITY_TIMEOUT_SECONDS = 30;
 const ATTENDANT_SCREEN_SECONDS = 60;
 
 // Ordem das etapas NA TELA -> id da seção no HTML (step-N).
-// 1: Triagem/gravidade (step-4) · 2: CPF (step-1) · 3: Serviço (step-2)
-// 4: Confirmação/especialidade (step-3) · 5: Prioridade por lei (step-6) · 6: Ficha (step-5)
+// 1: Triagem/nível de dor (step-4) · 2: CPF (step-1) · 3: Prioridade por lei (step-6)
+// 4: Serviço/motivo (step-2) · 5: Confirmação/especialidade (step-3) · 6: Ficha (step-5)
 // Assim não foi preciso renumerar os ids do HTML nem do CSS.
-const STEP_SECTIONS = { 1: 4, 2: 1, 3: 2, 4: 3, 5: 6, 6: 5 };
+const STEP_SECTIONS = { 1: 4, 2: 1, 3: 6, 4: 2, 5: 3, 6: 5 };
 const TICKET_STEP = 6;
+
+// Nome do nível do meio (dor moderada, mas constante) que aparece na ficha.
+// Pode trocar por outro nome que fique antes de "urgência" (ex.: "Semiurgente").
+const MODERATE_LEVEL_NAME = "Prioritário";
 
 // Nomes das prioridades por lei, usados na ficha
 const LEGAL_PRIORITY_LABELS = {
@@ -132,23 +136,23 @@ const i18nDict = {
     serv4Title: "Informações e Setores",
     serv4Desc:
       "Visitas a pacientes internados, dúvidas gerais e guichê de autorizações.",
-    triageMild: "Caso Leve",
+    triageMild: "Dor leve ou desconforto comum",
     triageMildDesc:
-      "Gripe leve, dor muscular baixa, curativos ou renovação de receita.",
-    triageMod: "Caso Intermediário",
+      "Dor de cabeça leve, gripe, dor muscular, curativos ou renovação de receita.",
+    triageMod: "Dor moderada, mas constante",
     triageModDesc:
-      "Febre alta, enxaqueca forte, mal-estar generalizado, pequenas fraturas.",
-    triageUrg: "Caso Grave",
+      "Não é tão forte, mas não passa: febre alta, enxaqueca, mal-estar persistente, pequenas fraturas.",
+    triageUrg: "Dor extrema ou muito forte",
     triageUrgDesc:
-      "Dor no peito, falta de ar intensa, sangramento ativo, queimaduras severas. Um atendente virá até você.",
+      "Dor insuportável, dor no peito, falta de ar intensa, sangramento ativo ou queimaduras severas. Um atendente virá até você.",
     step3Title: "Confirme seus dados e escolha a Especialidade",
     step3Sub: "Localizamos os seguintes dados em nosso sistema:",
     foundPatient: "Paciente de demonstração",
     cpfSimulationError: "Não foi possível preparar a demonstração. Tente novamente.",
     btnNotYou: "Não é você? Alterar",
     selectSpecLabel: "Selecione o Setor / Especialidade Desejada:",
-    step4Title: "Como você está se sentindo agora?",
-    step4Sub: "Selecione o nível que melhor descreve seu estado atual:",
+    step4Title: "Qual é o nível da sua dor agora?",
+    step4Sub: "Selecione a opção que melhor descreve como você está:",
     stepTriageLabel: "Triagem",
     legalTitle: "Você possui direito a Atendimento Prioritário?",
     legalSub:
@@ -461,14 +465,14 @@ async function confirmPatientIdentification() {
     if (isModerate) generateFinalTicket();
   });
   if (completed) {
-    speakText(isModerate ? i18nDict.pt.ticketSuccess : i18nDict.pt.step2Title);
+    speakText(isModerate ? i18nDict.pt.ticketSuccess : i18nDict.pt.legalTitle);
   }
 }
 
 async function selectService(type) {
   state.serviceType = type;
   playAudioTone(700, 0.1);
-  const completed = await showAiLoading(4, "loadingService");
+  const completed = await showAiLoading(5, "loadingService");
   if (completed) speakText(i18nDict.pt.step3Title);
 }
 
@@ -496,19 +500,19 @@ function renderSpecialties() {
 async function selectSpecialty(spec) {
   state.selectedSpecialty = spec;
   playAudioTone(700, 0.1);
-  const completed = await showAiLoading(5, "loadingPriority");
-  if (completed) speakText(i18nDict.pt.legalTitle);
-}
-
-async function selectLegalPriority(priority) {
-  state.legalPriority = priority;
-  playAudioTone(700, 0.1);
   const completed = await showAiLoading(
     TICKET_STEP,
     "loadingTicket",
     generateFinalTicket,
   );
   if (completed) speakText(i18nDict.pt.ticketSuccess);
+}
+
+async function selectLegalPriority(priority) {
+  state.legalPriority = priority;
+  playAudioTone(700, 0.1);
+  const completed = await showAiLoading(4, "loadingService");
+  if (completed) speakText(i18nDict.pt.step2Title);
 }
 
 async function selectPriority(level) {
@@ -613,7 +617,7 @@ function closePriorityTimeoutModal() {
 }
 
 function generateFinalTicket() {
-  // N = convencional · P = prioritária (caso intermediário ou prioridade por lei)
+  // N = convencional · P = prioritária (dor moderada e constante, ou prioridade por lei)
   const hasLegalPriority = state.legalPriority !== "CONVENCIONAL";
   const isPriority = state.urgencyLevel === "MODERATE" || hasLegalPriority;
   const prefix = isPriority ? "P" : "N";
@@ -629,10 +633,9 @@ function generateFinalTicket() {
 
   const badgeEl = document.getElementById("ticket-priority-badge");
   if (isPriority) {
-    const motivo = hasLegalPriority
-      ? (LEGAL_PRIORITY_LABELS[state.legalPriority] || state.legalPriority)
-      : "Intermediário";
-    badgeEl.innerText = `ATENDIMENTO PRIORITÁRIO (${motivo.toUpperCase()})`;
+    badgeEl.innerText = hasLegalPriority
+      ? `ATENDIMENTO PRIORITÁRIO (${(LEGAL_PRIORITY_LABELS[state.legalPriority] || state.legalPriority).toUpperCase()})`
+      : `ATENDIMENTO ${MODERATE_LEVEL_NAME.toUpperCase()}`;
     badgeEl.className =
       "inline-block px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-800 border border-amber-300";
   } else {
